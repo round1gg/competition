@@ -1,6 +1,6 @@
 {
   "name": "competition",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A package for competitive matchmaking and rating systems",
   "main": "src/main.ts",
   "keywords": [],
@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "test": "jest"
   },
