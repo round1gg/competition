@@ -1,6 +1,6 @@
 export default class Elo {
-  private _k: number;
-  private _p: number;
+  private _k: number
+  private _p: number
 
   /**
    * Elo rating calculator
@@ -8,8 +8,8 @@ export default class Elo {
    * @param p {number} The Performance Rating for calculating ratings (default: 400)
    */
   constructor(k: number = 32, p: number = 400) {
-    this._k = k;
-    this._p = p;
+    this._k = k
+    this._p = p
   }
 
   /**
@@ -20,8 +20,8 @@ export default class Elo {
    * @returns {number}
    */
   public expectedPoints = (ratingOne: number, ratingTwo: number, p: number): number => {
-    return 1 / (1 + Math.pow(10, (ratingTwo - ratingOne) / p));
-  };
+    return 1 / (1 + Math.pow(10, (ratingTwo - ratingOne) / p))
+  }
 
   /**
    * Calculates the delta of the ratings between two players based on K Factor and Performance Rating
@@ -33,13 +33,13 @@ export default class Elo {
    */
   public calculate = (ratingOne: number, ratingTwo: number, points: 1 | 0.5 | 0, k?: number, p?: number): number => {
     if (![1, 0.5, 0].includes(points)) {
-      throw new Error('Invalid points provided to Elo calculation. Please use 0, 0.5 or 1');
+      throw new Error('Invalid points provided to Elo calculation. Please use 0, 0.5 or 1')
     }
 
-    const factor = !k ? this._k : k;
-    const performance = !p ? this._p : p;
+    const factor = !k ? this._k : k
+    const performance = !p ? this._p : p
 
-    const expected = this.expectedPoints(ratingOne, ratingTwo, performance);
-    return ratingOne + factor * (points - expected);
-  };
+    const expected = this.expectedPoints(ratingOne, ratingTwo, performance)
+    return ratingOne + factor * (points - expected)
+  }
 }

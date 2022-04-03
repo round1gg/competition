@@ -1,42 +1,48 @@
 export enum Outcome {
   WIN = 1,
   DRAW = 0.5,
-  LOSS = 0
+  LOSS = 0,
 }
 
 export class Player {
   public static readonly ScalingFactor = 173.7178
 
-  private _defaultRating : number
-  public get defaultRating() : number {
+  private _defaultRating: number
+  public get defaultRating(): number {
     return this._defaultRating
   }
 
-  private _rating : number
-  public get rating() : number {
+  private _rating: number
+  public get rating(): number {
     return this._rating * Player.ScalingFactor + this._defaultRating
   }
 
-  private _rd : number
-  public get rd() : number {
+  private _rd: number
+  public get rd(): number {
     return this._rd * Player.ScalingFactor
   }
 
-  private _volatility : number
-  public get volatility() : number {
+  private _volatility: number
+  public get volatility(): number {
     return this._volatility
   }
 
-  private _tau : number
-  public get tau() : number {
+  private _tau: number
+  public get tau(): number {
     return this._tau
   }
 
-  public outcomes : Outcome[] = []
-  public oppRatings : number[] = []
-  public oppRDs : number[] = []
+  public outcomes: Outcome[] = []
+  public oppRatings: number[] = []
+  public oppRDs: number[] = []
 
-  constructor(rating : number = 1500, rd : number = 350, volatility : number = 0.06, tau : number = 0.5, defaultRating : number = 1500) {
+  constructor(
+    rating: number = 1500,
+    rd: number = 350,
+    volatility: number = 0.06,
+    tau: number = 0.5,
+    defaultRating: number = 1500,
+  ) {
     this._defaultRating = defaultRating
     this._rating = this.updateRating(rating)
     this._rd = this.updateDeviation(rd)
@@ -44,9 +50,9 @@ export class Player {
     this._tau = tau
   }
 
-  public clone = (includeMatches : boolean = false) : Player => {
+  public clone = (includeMatches: boolean = false): Player => {
     const newPlayer = new Player(this.rating, this.rd, this.volatility, this.tau, this.defaultRating)
-    if(includeMatches) {
+    if (includeMatches) {
       newPlayer.outcomes.push(...this.outcomes)
       newPlayer.oppRatings.push(...this.oppRatings)
       newPlayer.oppRDs.push(...this.oppRDs)
@@ -54,29 +60,28 @@ export class Player {
     return newPlayer
   }
 
-  public updateRating = (rating : number) : number => {
-    return this._rating = (rating - this._defaultRating) / Player.ScalingFactor
+  public updateRating = (rating: number): number => {
+    return (this._rating = (rating - this._defaultRating) / Player.ScalingFactor)
   }
 
-  public updateDeviation = (rd : number) : number => {
-    return this._rd = rd / Player.ScalingFactor
+  public updateDeviation = (rd: number): number => {
+    return (this._rd = rd / Player.ScalingFactor)
   }
 
-  private _resetMatches = () : void => {
+  private _resetMatches = (): void => {
     this.outcomes = []
     this.oppRatings = []
     this.oppRDs = []
   }
 
-  private _resetRD = () : void => {
+  private _resetRD = (): void => {
     this._rd = Math.sqrt(Math.pow(this._rd, 2) + Math.pow(this._volatility, 2))
   }
 
-  public addResult = (opponent : Player, outcome : Outcome) : Player => {
-
+  public addResult = (opponent: Player, outcome: Outcome): Player => {
     // Convert opponent's Rating and RD onto the Glicko2 scale
-    let oppRating = (opponent.rating - opponent.defaultRating) / Player.ScalingFactor
-    let oppRD = opponent.rd / Player.ScalingFactor
+    const oppRating = (opponent.rating - opponent.defaultRating) / Player.ScalingFactor
+    const oppRD = opponent.rd / Player.ScalingFactor
 
     this.oppRatings.push(oppRating)
     this.oppRDs.push(oppRD)
@@ -84,9 +89,8 @@ export class Player {
     return this
   }
 
-  public updateRank = () : void => {
-
-    if(!this.outcomes.length) {
+  public updateRank = (): void => {
+    if (!this.outcomes.length) {
       this._resetRD()
     } else {
       // Step 1 - Done by Player Constructor
@@ -105,11 +109,11 @@ export class Player {
       this._resetRD()
 
       // Step 7 - Update Rating Deviation using new variance
-      this._rd = 1 / Math.sqrt((1 / Math.pow(this._rd, 2)) + (1 / v))
+      this._rd = 1 / Math.sqrt(1 / Math.pow(this._rd, 2) + 1 / v)
 
       // Step 7 (Cont.) - Calculate and update Rating
       let sum = 0
-      for(let i = 0, len = this.oppRatings.length; i < len; i++) {
+      for (let i = 0, len = this.oppRatings.length; i < len; i++) {
         sum += this._g(this.oppRDs[i]) * (this.outcomes[i] - this._E(this.oppRatings[i], this.oppRDs[i]))
       }
       this._rating += Math.pow(this._rd, 2) * sum
@@ -121,7 +125,7 @@ export class Player {
     }
   }
 
-  public volatilityAlgorithm = (v : number, delta : number) : number => {
+  public volatilityAlgorithm = (v: number, delta: number): number => {
     // Step 5.1
     let A = Math.log(Math.pow(this._volatility, 2))
     const f = this._fFactory(delta, v, A)
@@ -129,11 +133,11 @@ export class Player {
 
     // Step 5.2
     let B: number
-    if(Math.pow(delta, 2) > Math.pow(this._rd, 2) + v) {
+    if (Math.pow(delta, 2) > Math.pow(this._rd, 2) + v) {
       B = Math.log(Math.pow(delta, 2) - Math.pow(this._rd, 2) - v)
     } else {
       let k = 1
-      while(f(A - k * this.tau) < 0) {
+      while (f(A - k * this.tau) < 0) {
         k++
       }
       B = A - k * this.tau
@@ -144,12 +148,12 @@ export class Player {
     let fB = f(B)
 
     // Step 5.4
-    let C : number
-    let fC : number
-    while(Math.abs(B - A) > epsilon) {
-      C = A + (A - B) * fA / (fB - fA)
+    let C: number
+    let fC: number
+    while (Math.abs(B - A) > epsilon) {
+      C = A + ((A - B) * fA) / (fB - fA)
       fC = f(C)
-      if(fC * fB < 0) {
+      if (fC * fB < 0) {
         A = B
         fA = fB
       } else {
@@ -161,43 +165,46 @@ export class Player {
 
     // Step 5.5
     return Math.exp(A / 2)
-
   }
 
   // Calculation of the estimated variance of the player's rating based on outcomes
-  private _variance = () : number => {
+  private _variance = (): number => {
     let sum = 0
-    for(let i = 0, len = this.oppRatings.length; i < len; i++) {
-      let E = this._E(this.oppRatings[i], this.oppRDs[i])
+    for (let i = 0, len = this.oppRatings.length; i < len; i++) {
+      const E = this._E(this.oppRatings[i], this.oppRDs[i])
       sum += Math.pow(this._g(this.oppRDs[i]), 2) * E * (1 - E)
     }
     return 1 / sum
   }
 
   // Glicko E fuction
-  private _E = (oppRating : number, oppRD : number) : number => {
+  private _E = (oppRating: number, oppRD: number): number => {
     return 1 / (1 + Math.exp(-1 * this._g(oppRD) * (this._rating - oppRating)))
   }
 
   // Glicko2 g(rd) function
-  private _g = (rd : number) : number => {
-    return 1 / Math.sqrt(1 + 3 * Math.pow(rd, 2) / Math.pow(Math.PI, 2))
+  private _g = (rd: number): number => {
+    return 1 / Math.sqrt(1 + (3 * Math.pow(rd, 2)) / Math.pow(Math.PI, 2))
   }
 
   // Glicko2 delta function
   // Calculation of the estimated improvement in rating (see: Step 4)
-  private _delta = (v : number) : number => {
+  private _delta = (v: number): number => {
     let sum = 0
-    for(let i = 0, len = this.oppRatings.length; i < len; i++) {
+    for (let i = 0, len = this.oppRatings.length; i < len; i++) {
       sum += this._g(this.oppRDs[i]) * (this.outcomes[i] - this._E(this.oppRatings[i], this.oppRDs[i]))
     }
     return v * sum
   }
 
-  private _fFactory = (delta : number, v : number, a : number) => {
-    let player = this
-    return (x : number) => {
-      return Math.exp(x) * (Math.pow(delta, 2) - Math.pow(player._rd, 2) - v - Math.exp(x)) / (2 * Math.pow(Math.pow(player._rd, 2) + v + Math.exp(x), 2)) - (x - a) / Math.pow(player._tau, 2)
+  private _fFactory = (delta: number, v: number, a: number) => {
+    const player = this
+    return (x: number) => {
+      return (
+        (Math.exp(x) * (Math.pow(delta, 2) - Math.pow(player._rd, 2) - v - Math.exp(x))) /
+          (2 * Math.pow(Math.pow(player._rd, 2) + v + Math.exp(x), 2)) -
+        (x - a) / Math.pow(player._tau, 2)
+      )
     }
   }
 }
