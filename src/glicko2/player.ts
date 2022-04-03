@@ -44,6 +44,16 @@ export class Player {
     this._tau = tau
   }
 
+  public clone = (includeMatches : boolean = false) : Player => {
+    const newPlayer = new Player(this.rating, this.rd, this.volatility, this.tau, this.defaultRating)
+    if(includeMatches) {
+      newPlayer.outcomes.push(...this.outcomes)
+      newPlayer.oppRatings.push(...this.oppRatings)
+      newPlayer.oppRDs.push(...this.oppRDs)
+    }
+    return newPlayer
+  }
+
   public updateRating = (rating : number) : number => {
     return this._rating = (rating - this._defaultRating) / Player.ScalingFactor
   }
