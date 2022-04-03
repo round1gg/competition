@@ -4,8 +4,12 @@
   "description": "A package for competitive matchmaking and rating systems",
   "main": "src/main.ts",
   "keywords": [],
-  "author": "Taylor Balbi",
+  "author": "Taylor Balbi <me@taylorbalbi.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/round1gg/competition.git"
+  },
   "files": [
     "lib/**/*"
   ],

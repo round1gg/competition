@@ -1,3 +1,4 @@
-import Elo from './elo';
+import Elo from './elo'
+import * as Glicko2 from './glicko2'
 
-export { Elo };
+export { Elo, Glicko2 }
