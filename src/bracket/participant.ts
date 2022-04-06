@@ -21,8 +21,8 @@ export class Participant {
     return this._seeds
   }
 
-  private _meta: any = null
-  public get meta(): any {
+  private _meta: {[key: string]: any}
+  public get meta(): {[key: string]: any} {
     return this._meta
   }
 
@@ -31,7 +31,7 @@ export class Participant {
     this._name = options.name || ''
     this._matches = options.matches || []
     this._seeds = options.seeds || new Set<string>()
-    this._meta = options.meta || null
+    this._meta = Object.assign({}, options.meta || {})
   }
 
   public reset = () => {
@@ -39,8 +39,11 @@ export class Participant {
     this._seeds = new Set<string>()
   }
 
-  public setMeta = (meta: any): void => {
-    this._meta = meta
+  public setMeta(meta: {[key: string]: any}): void {
+    this._meta = Object.assign({}, meta)
+  }
+  public setMetaByKey(key: string, value: any): void {
+    this._meta = Object.assign({}, this._meta, {[key]: value})
   }
 
   public addSeed = (seed: string): void => {
