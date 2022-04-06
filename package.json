@@ -4,7 +4,7 @@
   "description": "A package for competitive matchmaking and rating systems",
   "main": "src/main.ts",
   "keywords": [],
-  "author": "Taylor Balbi <me@taylorbalbi.com>",
+  "author": "Round1.gg <round1gg@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
