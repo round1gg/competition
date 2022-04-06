@@ -123,8 +123,8 @@ export interface IBracket {
 
 export enum BracketType {
   'ELIMINATION',
-  'ROUND_ROBIN',
-  'SWISS',
+  // 'ROUND_ROBIN',
+  // 'SWISS',
 }
 
 export enum BracketState {
