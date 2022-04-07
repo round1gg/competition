@@ -56,3 +56,5 @@ export default class Team {
     })
   }
 }
+
+const whatever: Team = new Team([])

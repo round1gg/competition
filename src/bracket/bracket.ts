@@ -26,8 +26,8 @@ export class Bracket {
     return this._matches
   }
 
-  protected _meta: {[key: string]: any}
-  public get meta(): {[key: string]: any} {
+  protected _meta: { [key: string]: any }
+  public get meta(): { [key: string]: any } {
     return this._meta
   }
 
@@ -40,12 +40,12 @@ export class Bracket {
     this._meta = Object.assign({}, options.meta || {})
   }
 
-  public setMeta(meta: {[key: string]: any}): void {
+  public setMeta(meta: { [key: string]: any }): void {
     this._meta = Object.assign({}, meta)
   }
 
   public setMetaByKey(key: string, value: any): void {
-    this._meta = Object.assign({}, this._meta, {[key]: value})
+    this._meta = Object.assign({}, this._meta, { [key]: value })
   }
 
   public addParticipants(participants: Participant | Participant[]): void {

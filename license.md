@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2022 Taylor Balbi
+Copyright (c) 2022 Round1.gg
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

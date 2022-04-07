@@ -38,8 +38,8 @@ export class Match {
   public get bracket(): Bracket {
     return this._bracket
   }
-  private _meta: {[key: string]: any}
-  public get meta(): {[key: string]: any} {
+  private _meta: { [key: string]: any }
+  public get meta(): { [key: string]: any } {
     return this._meta
   }
 
@@ -59,11 +59,11 @@ export class Match {
     this._meta = Object.assign({}, options.meta || {})
   }
 
-  public setMeta(meta: {[key: string]: any}): void {
+  public setMeta(meta: { [key: string]: any }): void {
     this._meta = Object.assign({}, meta)
   }
   public setMetaByKey(key: string, value: any): void {
-    this._meta = Object.assign({}, this._meta, {[key]: value})
+    this._meta = Object.assign({}, this._meta, { [key]: value })
   }
 
   public updatePlayers = (p1: Participant | null, p2: Participant | null): void => {

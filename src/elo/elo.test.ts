@@ -1,4 +1,4 @@
-import Elo from './index'
+import Elo from './elo'
 
 describe('Test Elo Functionality', () => {
   it('should calculate expected score', () => {
