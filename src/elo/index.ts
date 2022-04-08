@@ -1,5 +1,3 @@
 import Elo from './elo'
 
-export {
-  Elo
-}
+export { Elo }
