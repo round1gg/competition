@@ -2,7 +2,7 @@ import { BracketState, BracketType, IBracket } from './bracket'
 import Elimination from './elimination'
 import { MatchWinner } from './match'
 import { Participant } from './participant'
-import { NearestPow2 } from './util'
+
 describe('Bracket Elimination', () => {
   describe('7 Participants', () => {
     const options: IBracket = {
@@ -261,7 +261,7 @@ describe('Bracket Elimination', () => {
       bracket.createMatches()
       expect(bracket.matches.length).toBe(31)
 
-      // bracket.visualize()
+      bracket.visualize()
     })
     it('should sort participants in reverse order then back again', () => {
       expect(bracket.participants[0]).toBe(participants[0])
@@ -281,7 +281,7 @@ describe('Bracket Elimination', () => {
       expect(participants[3].seeds.size).toBe(1)
       expect(participants[3].seeds.has('S4')).toBe(true)
 
-      // bracket.visualize()
+      bracket.visualize()
     })
     it('should assign participants to the proper matches', () => {
       bracket.seedMatches()
@@ -302,7 +302,7 @@ describe('Bracket Elimination', () => {
       expect(bracket.matches[30].p1).toBe(null)
       expect(bracket.matches[30].p2).toBe(null)
 
-      // bracket.visualize()
+      bracket.visualize()
     })
     it('should report the correct winners for the first round and update second round matches', () => {
       const [m1, m2, m3] = bracket.matches.sort((a, b) => (+a.id < +b.id ? -1 : 1))
@@ -320,7 +320,7 @@ describe('Bracket Elimination', () => {
       expect(m2.winner).toBe(MatchWinner.P2)
       expect(m3.winner).toBe(MatchWinner.UNDECIDED)
 
-      // bracket.visualize()
+      bracket.visualize()
     })
     it('should report the correct winners for the final round', () => {
       const [m1, m2, m3] = bracket.matches.sort((a, b) => (+a.id < +b.id ? -1 : 1))
@@ -334,7 +334,7 @@ describe('Bracket Elimination', () => {
       expect(m2.winner).toBe(MatchWinner.P2)
       expect(m3.winner).toBe(MatchWinner.P1)
 
-      // bracket.visualize()
+      bracket.visualize()
     })
   })
 })
